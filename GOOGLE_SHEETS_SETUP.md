@@ -22,9 +22,9 @@ This integration uses **Server Actions** to keep your API key secure on the serv
 
 Add your project data starting from Row 2. Example:
 
-```
+\`\`\`
 1 | Delhi Metro Phase 4 | Delhi | Delhi | 8500000000 | 5100000000 | Infrastructure | In Progress | 2022-03-15 | 2025-12-31 | Extension of Delhi Metro
-```
+\`\`\`
 
 ### Step 3: Make Sheet Publicly Readable
 
@@ -36,9 +36,9 @@ Add your project data starting from Row 2. Example:
 ### Step 4: Get Your Spreadsheet ID
 
 From your sheet URL:
-```
+\`\`\`
 https://docs.google.com/spreadsheets/d/1a2b3c4d5e6f7g8h9i0j/edit
-```
+\`\`\`
 
 The Spreadsheet ID is: `1a2b3c4d5e6f7g8h9i0j`
 

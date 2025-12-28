@@ -30,10 +30,10 @@ This dashboard uses multiple Google services for a complete backend solution.
    - ID | Project Name | Category | City | State | Budget | Used | Status | Verified
 
 Example data:
-```
+\`\`\`
 1 | Metro Line Extension | Infrastructure | Delhi | Delhi | 50000000000 | 32500000000 | active | true
 2 | Smart City Initiative | Technology | Mumbai | Maharashtra | 30000000000 | 18000000000 | active | true
-```
+\`\`\`
 
 3. Share the spreadsheet with "Anyone with the link can view"
 4. Copy the Spreadsheet ID from the URL (the long string between /d/ and /edit)
