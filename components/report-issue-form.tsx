@@ -14,8 +14,12 @@ import { Upload, AlertCircle, Send, MapPin } from "lucide-react"
 export function ReportIssueForm() {
   const [file, setFile] = useState<File | null>(null)
   const [location, setLocation] = useState("")
+  const [category, setCategory] = useState("")
+  const [description, setDescription] = useState("")
   const locationInputRef = useRef<HTMLInputElement>(null)
+  const formRef = useRef<HTMLFormElement>(null)
   const [placesAvailable, setPlacesAvailable] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -60,6 +64,7 @@ export function ReportIssueForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setIsSubmitting(true)
 
     const formData = new FormData(e.currentTarget)
 
@@ -70,14 +75,25 @@ export function ReportIssueForm() {
       })
 
       if (response.ok) {
-        alert("Report submitted successfully!")
-        e.currentTarget.reset()
+        const data = await response.json()
+        alert(data.message || "Report submitted successfully!")
+
+        if (formRef.current) {
+          formRef.current.reset()
+        }
         setFile(null)
         setLocation("")
+        setCategory("")
+        setDescription("")
+      } else {
+        const errorData = await response.json()
+        throw new Error(errorData.error || "Submission failed")
       }
     } catch (error) {
       console.error("Error submitting report:", error)
-      alert("Failed to submit report. Please try again.")
+      alert(`Failed to submit report: ${error instanceof Error ? error.message : "Unknown error"}`)
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -91,10 +107,10 @@ export function ReportIssueForm() {
         <CardDescription>Help improve your community by reporting problems</CardDescription>
       </CardHeader>
       <CardContent className="flex-1">
-        <form className="space-y-4" onSubmit={handleSubmit}>
+        <form ref={formRef} className="space-y-4" onSubmit={handleSubmit}>
           <div className="space-y-2">
             <Label htmlFor="category">Issue Category</Label>
-            <Select name="category">
+            <Select name="category" value={category} onValueChange={setCategory} required>
               <SelectTrigger id="category">
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
@@ -124,6 +140,7 @@ export function ReportIssueForm() {
                 className="bg-background pl-9"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
+                required
               />
             </div>
             <p className="text-xs text-muted-foreground">
@@ -141,6 +158,8 @@ export function ReportIssueForm() {
               placeholder="Describe the issue in detail..."
               rows={4}
               className="bg-background resize-none"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
 
@@ -168,9 +187,9 @@ export function ReportIssueForm() {
             <p className="text-xs text-muted-foreground">Photos help authorities verify and prioritize your report</p>
           </div>
 
-          <Button type="submit" className="w-full" size="lg">
+          <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
             <Send className="mr-2 size-4" />
-            Submit Report
+            {isSubmitting ? "Submitting..." : "Submit Report"}
           </Button>
         </form>
       </CardContent>
