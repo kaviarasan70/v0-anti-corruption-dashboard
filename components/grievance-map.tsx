@@ -189,36 +189,103 @@ export function GrievanceMap() {
   }, [])
 
   const drawMap = (ctx: CanvasRenderingContext2D, width: number, height: number) => {
-    // Light blue background for India
-    ctx.fillStyle = "#e3f2fd"
+    // Ocean background
+    ctx.fillStyle = "#d4e6f1"
     ctx.fillRect(0, 0, width, height)
 
-    // Draw grid lines
-    ctx.strokeStyle = "#e0e0e0"
-    ctx.lineWidth = 1
-    for (let i = 0; i < width; i += 40) {
-      ctx.beginPath()
-      ctx.moveTo(i, 0)
-      ctx.lineTo(i, height)
-      ctx.stroke()
+    // India map bounds (approximate)
+    const indiaMinLat = 8.4
+    const indiaMaxLat = 35.0
+    const indiaMinLng = 68.2
+    const indiaMaxLng = 97.0
+
+    const mapPadding = 40
+    const mapWidth = width - mapPadding * 2
+    const mapHeight = height - mapPadding * 2
+
+    // Draw simplified India map with color
+    ctx.fillStyle = "#f0e68c"
+    ctx.strokeStyle = "#d4a574"
+    ctx.lineWidth = 2
+
+    // Draw India outline (simplified polygon)
+    ctx.beginPath()
+    // Start from northwest and draw a rough Indian boundary
+    const points = [
+      [68.2, 35.0], // Northwest corner
+      [77.0, 35.0], // North
+      [97.0, 35.0], // Northeast corner
+      [97.0, 28.0], // East side
+      [97.0, 20.0], // Southeast
+      [97.0, 10.0], // Far east
+      [95.0, 8.4], // Southeast corner
+      [92.0, 6.0], // South
+      [88.0, 5.0], // South-central
+      [77.0, 8.0], // Southwest
+      [72.0, 9.0], // Southwest
+      [68.2, 15.0], // West side
+      [68.2, 25.0], // Northwest
+      [68.2, 35.0], // Back to start
+    ]
+
+    ctx.moveTo(
+      mapPadding + ((points[0][0] - indiaMinLng) / (indiaMaxLng - indiaMinLng)) * mapWidth,
+      mapPadding + ((indiaMaxLat - points[0][1]) / (indiaMaxLat - indiaMinLat)) * mapHeight,
+    )
+
+    for (let i = 1; i < points.length; i++) {
+      const x = mapPadding + ((points[i][0] - indiaMinLng) / (indiaMaxLng - indiaMinLng)) * mapWidth
+      const y = mapPadding + ((indiaMaxLat - points[i][1]) / (indiaMaxLat - indiaMinLat)) * mapHeight
+      ctx.lineTo(x, y)
     }
-    for (let i = 0; i < height; i += 40) {
+    ctx.fill()
+    ctx.stroke()
+
+    // Draw grid lines for reference
+    ctx.strokeStyle = "#e8d5c4"
+    ctx.lineWidth = 0.5
+    ctx.globalAlpha = 0.3
+
+    // Longitude lines
+    for (let lng = 70; lng <= 96; lng += 5) {
+      const x = mapPadding + ((lng - indiaMinLng) / (indiaMaxLng - indiaMinLng)) * mapWidth
       ctx.beginPath()
-      ctx.moveTo(0, i)
-      ctx.lineTo(width, i)
+      ctx.moveTo(x, mapPadding)
+      ctx.lineTo(x, mapPadding + mapHeight)
       ctx.stroke()
     }
 
-    // Draw India map outline (simplified)
-    ctx.strokeStyle = "#4a90e2"
-    ctx.lineWidth = 2
-    ctx.fillStyle = "#f5f5f5"
-    ctx.fillRect(width * 0.1, height * 0.1, width * 0.8, height * 0.8)
+    // Latitude lines
+    for (let lat = 10; lat <= 35; lat += 5) {
+      const y = mapPadding + ((indiaMaxLat - lat) / (indiaMaxLat - indiaMinLat)) * mapHeight
+      ctx.beginPath()
+      ctx.moveTo(mapPadding, y)
+      ctx.lineTo(mapPadding + mapWidth, y)
+      ctx.stroke()
+    }
+
+    ctx.globalAlpha = 1.0
+
+    // Add longitude labels
+    ctx.fillStyle = "#666"
+    ctx.font = "10px sans-serif"
+    ctx.textAlign = "center"
+    for (let lng = 70; lng <= 96; lng += 5) {
+      const x = mapPadding + ((lng - indiaMinLng) / (indiaMaxLng - indiaMinLng)) * mapWidth
+      ctx.fillText(lng.toString(), x, height - 10)
+    }
+
+    // Add latitude labels
+    ctx.textAlign = "right"
+    for (let lat = 10; lat <= 35; lat += 5) {
+      const y = mapPadding + ((indiaMaxLat - lat) / (indiaMaxLat - indiaMinLat)) * mapHeight
+      ctx.fillText(lat.toString(), mapPadding - 10, y + 4)
+    }
 
     // Draw location markers
-    grievances.forEach((grievance, index) => {
-      const x = ((grievance.lng - 68) / 35) * width
-      const y = ((35 - (grievance.lat - 8)) / 35) * height
+    grievances.forEach((grievance) => {
+      const x = mapPadding + ((grievance.lng - indiaMinLng) / (indiaMaxLng - indiaMinLng)) * mapWidth
+      const y = mapPadding + ((indiaMaxLat - grievance.lat) / (indiaMaxLat - indiaMinLat)) * mapHeight
 
       // Draw circle based on severity
       const isHovered = hoveredGrievance === grievance.id
@@ -228,6 +295,13 @@ export function GrievanceMap() {
         medium: "#eab308",
       }
 
+      // Shadow effect
+      ctx.fillStyle = "rgba(0, 0, 0, 0.1)"
+      ctx.beginPath()
+      ctx.arc(x + 1, y + 1, isHovered ? 11 : 7, 0, Math.PI * 2)
+      ctx.fill()
+
+      // Main circle
       ctx.fillStyle = colors[grievance.severity as keyof typeof colors]
       ctx.beginPath()
       ctx.arc(x, y, isHovered ? 10 : 6, 0, Math.PI * 2)
@@ -238,6 +312,12 @@ export function GrievanceMap() {
       ctx.lineWidth = 2
       ctx.stroke()
     })
+
+    // Add title
+    ctx.fillStyle = "#1a1a1a"
+    ctx.font = "bold 14px sans-serif"
+    ctx.textAlign = "center"
+    ctx.fillText("India - Grievance Report Map", width / 2, 20)
   }
 
   const handleCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -248,10 +328,19 @@ export function GrievanceMap() {
     const x = e.clientX - rect.left
     const y = e.clientY - rect.top
 
+    const indiaMinLat = 8.4
+    const indiaMaxLat = 35.0
+    const indiaMinLng = 68.2
+    const indiaMaxLng = 97.0
+
+    const mapPadding = 40
+    const mapWidth = canvas.width - mapPadding * 2
+    const mapHeight = canvas.height - mapPadding * 2
+
     // Check which marker was clicked
     grievances.forEach((grievance) => {
-      const markerX = ((grievance.lng - 68) / 35) * canvas.width
-      const markerY = ((35 - (grievance.lat - 8)) / 35) * canvas.height
+      const markerX = mapPadding + ((grievance.lng - indiaMinLng) / (indiaMaxLng - indiaMinLng)) * mapWidth
+      const markerY = mapPadding + ((indiaMaxLat - grievance.lat) / (indiaMaxLat - indiaMinLat)) * mapHeight
       const distance = Math.sqrt((x - markerX) ** 2 + (y - markerY) ** 2)
 
       if (distance < 15) {
@@ -268,10 +357,19 @@ export function GrievanceMap() {
     const x = e.clientX - rect.left
     const y = e.clientY - rect.top
 
+    const indiaMinLat = 8.4
+    const indiaMaxLat = 35.0
+    const indiaMinLng = 68.2
+    const indiaMaxLng = 97.0
+
+    const mapPadding = 40
+    const mapWidth = canvas.width - mapPadding * 2
+    const mapHeight = canvas.height - mapPadding * 2
+
     let hovered = null
     grievances.forEach((grievance) => {
-      const markerX = ((grievance.lng - 68) / 35) * canvas.width
-      const markerY = ((35 - (grievance.lat - 8)) / 35) * canvas.height
+      const markerX = mapPadding + ((grievance.lng - indiaMinLng) / (indiaMaxLng - indiaMinLng)) * mapWidth
+      const markerY = mapPadding + ((indiaMaxLat - grievance.lat) / (indiaMaxLat - indiaMinLat)) * mapHeight
       const distance = Math.sqrt((x - markerX) ** 2 + (y - markerY) ** 2)
 
       if (distance < 15) {
