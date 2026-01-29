@@ -168,9 +168,7 @@ export function GrievanceMap() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [selectedGrievance, setSelectedGrievance] = useState<(typeof grievances)[0] | null>(null)
   const [hoveredGrievance, setHoveredGrievance] = useState<number | null>(null)
-  const useGoogleMaps = false // Declare useGoogleMaps variable
-  const mapRef = useRef<HTMLDivElement>(null) // Declare mapRef variable
-  const mapLoaded = false // Declare mapLoaded variable
+  const [showGoogleMaps, setShowGoogleMaps] = useState(false)
 
   // Draw interactive map on canvas
   useEffect(() => {
@@ -390,37 +388,95 @@ export function GrievanceMap() {
         <CardDescription>Real-time citizen reports across India (Click markers for details)</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 space-y-4">
-        {/* Interactive Canvas Map */}
-        <div className="space-y-2">
-          <div className="relative aspect-[4/3] w-full rounded-lg border-2 border-border overflow-hidden bg-muted/30">
-            <canvas
-              ref={canvasRef}
-              onClick={handleCanvasClick}
-              onMouseMove={handleCanvasHover}
-              onMouseLeave={() => setHoveredGrievance(null)}
-              className="w-full h-full cursor-pointer"
-            />
-            <div className="absolute bottom-2 left-2 text-xs text-muted-foreground bg-background/90 backdrop-blur-sm px-2 py-1 rounded border">
-              Interactive Map - {grievances.length} Reports
-            </div>
-          </div>
-
-          {/* Legend */}
-          <div className="flex gap-4 text-xs">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-red-500 border border-white" />
-              <span>Critical</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-orange-500 border border-white" />
-              <span>High</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-yellow-500 border border-white" />
-              <span>Medium</span>
-            </div>
-          </div>
+        {/* Map Toggle */}
+        <div className="flex gap-2">
+          <button
+            onClick={() => setShowGoogleMaps(false)}
+            className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+              !showGoogleMaps
+                ? "bg-primary text-primary-foreground"
+                : "bg-muted text-muted-foreground hover:bg-muted/80"
+            }`}
+          >
+            Canvas Map
+          </button>
+          <button
+            onClick={() => setShowGoogleMaps(true)}
+            className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+              showGoogleMaps
+                ? "bg-primary text-primary-foreground"
+                : "bg-muted text-muted-foreground hover:bg-muted/80"
+            }`}
+          >
+            Google Maps
+          </button>
         </div>
+
+        {/* Interactive Canvas Map */}
+        {!showGoogleMaps && (
+          <div className="space-y-2">
+            <div className="relative aspect-[4/3] w-full rounded-lg border-2 border-border overflow-hidden bg-muted/30">
+              <canvas
+                ref={canvasRef}
+                onClick={handleCanvasClick}
+                onMouseMove={handleCanvasHover}
+                onMouseLeave={() => setHoveredGrievance(null)}
+                className="w-full h-full cursor-pointer"
+              />
+              <div className="absolute bottom-2 left-2 text-xs text-muted-foreground bg-background/90 backdrop-blur-sm px-2 py-1 rounded border">
+                Interactive Map - {grievances.length} Reports
+              </div>
+            </div>
+
+            {/* Legend */}
+            <div className="flex gap-4 text-xs">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-red-500 border border-white" />
+                <span>Critical</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-orange-500 border border-white" />
+                <span>High</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-yellow-500 border border-white" />
+                <span>Medium</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Google Maps Embed */}
+        {showGoogleMaps && (
+          <div className="space-y-2">
+            <div className="relative w-full aspect-[4/3] rounded-lg border-2 border-border overflow-hidden bg-muted/30">
+              <iframe
+                title="India Citizen Watchdog - Grievance Map"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31358533.13889173!2d77.22033773215065!3d20.59368110852261!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x394699b6236f7c29%3A0x8883e3fbe3cecd8!2sIndia!5e0!3m2!1sen!2sin!4v1675328949851"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen={true}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+              <div className="absolute bottom-2 left-2 text-xs text-muted-foreground bg-background/90 backdrop-blur-sm px-2 py-1 rounded border">
+                Google Maps Interactive View
+              </div>
+            </div>
+
+            <div className="text-xs text-muted-foreground space-y-2">
+              <p className="font-semibold">Map Features:</p>
+              <ul className="list-disc list-inside space-y-1">
+                <li>Drag to pan across India</li>
+                <li>Scroll to zoom in/out</li>
+                <li>Search for specific locations</li>
+                <li>View street-level imagery</li>
+                <li>Click locations to explore</li>
+              </ul>
+            </div>
+          </div>
+        )}
 
         {/* Selected Grievance Details */}
         {selectedGrievance && (
