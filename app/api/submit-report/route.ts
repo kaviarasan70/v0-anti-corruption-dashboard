@@ -22,11 +22,8 @@ export async function POST(request: NextRequest) {
     const { data, error } = await supabase.from("reports").insert([reportData]).select()
 
     if (error) {
-      console.error("[v0] Database error:", error)
       throw new Error(`Database error: ${error.message}`)
     }
-
-    console.log("[v0] Report saved to database:", data)
 
     // Optional: Also save to Google Sheets if configured
     const SPREADSHEET_ID = process.env.GRIEVANCES_SPREADSHEET_ID
@@ -51,11 +48,10 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: "Report submitted successfully and saved to database!",
+      message: "Report submitted successfully!",
       reportId: data[0]?.id,
     })
   } catch (error) {
-    console.error("[v0] Error submitting report:", error)
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Failed to submit report" },
       { status: 500 },

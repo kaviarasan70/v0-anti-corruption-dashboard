@@ -17,8 +17,7 @@ export function GoogleMapsLoader({ children }: { children: React.ReactNode }) {
       .then((res) => res.text())
       .then((apiKey) => {
         if (!apiKey || apiKey.includes("error")) {
-          console.log("[v0] Google Maps API key not configured - using fallback mode")
-          setLoaded(true) // Set loaded to show fallback UI
+          setLoaded(true)
           return
         }
 
@@ -28,20 +27,17 @@ export function GoogleMapsLoader({ children }: { children: React.ReactNode }) {
         script.defer = true
 
         script.onload = () => {
-          console.log("[v0] Google Maps loaded successfully")
           setLoaded(true)
         }
 
         script.onerror = () => {
-          console.error("[v0] Failed to load Google Maps - using fallback")
-          setLoaded(true) // Still show fallback UI
+          setLoaded(true)
         }
 
         document.head.appendChild(script)
       })
-      .catch((err) => {
-        console.error("[v0] Failed to fetch Maps API key - using fallback:", err)
-        setLoaded(true) // Still show fallback UI
+      .catch(() => {
+        setLoaded(true)
       })
   }, [])
 

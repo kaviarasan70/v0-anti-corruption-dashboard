@@ -80,7 +80,6 @@ export function ReportIssueForm() {
 
       if (response.ok) {
         const data = await response.json()
-        console.log("[v0] Report submitted successfully:", data)
         setSubmitSuccess(true)
 
         if (formRef.current) {
@@ -98,7 +97,6 @@ export function ReportIssueForm() {
         throw new Error(errorData.error || "Submission failed")
       }
     } catch (error) {
-      console.error("[v0] Error submitting report:", error)
       setSubmitError(error instanceof Error ? error.message : "Unknown error")
     } finally {
       setIsSubmitting(false)
