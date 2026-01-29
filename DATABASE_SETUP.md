@@ -27,6 +27,23 @@ To create the table in your Supabase database:
 - The script will automatically run when you execute it from the v0 interface
 - Or you can manually execute it in the Supabase SQL editor
 
+### 1.5 Seed Sample Data (Optional)
+
+To populate the database with 15 sample reports for demonstration:
+
+1. Go to your Supabase dashboard
+2. Open SQL Editor
+3. Create a new query and copy the contents from `scripts/002_seed_sample_reports.sql`
+4. Execute the query
+
+This will add sample citizen reports across different cities showing various issue types and statuses (pending, in-progress, resolved).
+
+**Sample data includes:**
+- 15 realistic citizen reports
+- Multiple cities across India (Delhi, Mumbai, Bangalore, Kolkata, etc.)
+- Various issue categories (potholes, water scarcity, drainage, street lights, etc.)
+- Different status values demonstrating the full workflow
+
 ### 2. Row Level Security (RLS)
 
 The reports table has RLS enabled with the following policies:
@@ -59,19 +76,19 @@ Saves a new report to the database.
 - `photo` (optional): Photo file
 
 **Response:**
-```json
+\`\`\`json
 {
   "success": true,
   "message": "Report submitted successfully and saved to database!",
   "reportId": "uuid"
 }
-```
+\`\`\`
 
 ## Querying Reports
 
 To fetch reports from the database:
 
-```typescript
+\`\`\`typescript
 import { createClient } from "@/lib/supabase/client"
 
 const supabase = createClient()
@@ -79,7 +96,7 @@ const { data, error } = await supabase
   .from("reports")
   .select("*")
   .order("created_at", { ascending: false })
-```
+\`\`\`
 
 ## Future Enhancements
 
