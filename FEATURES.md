@@ -157,7 +157,7 @@ Each project card shows:
 ### Sample Data Structure
 
 #### Projects
-```typescript
+\`\`\`typescript
 {
   id: string
   name: string
@@ -171,10 +171,10 @@ Each project card shows:
   progress: number
   verified: boolean
 }
-```
+\`\`\`
 
 #### Grievances
-```typescript
+\`\`\`typescript
 {
   id: string
   type: string
@@ -184,7 +184,7 @@ Each project card shows:
   date: string
   description: string
 }
-```
+\`\`\`
 
 ### Google Sheets Schema
 

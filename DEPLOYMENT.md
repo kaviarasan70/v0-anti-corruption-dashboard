@@ -18,94 +18,94 @@ Your app is already configured for Vercel deployment.
 ### Manual Vercel Deployment
 
 1. **Install Vercel CLI**
-   ```bash
+   \`\`\`bash
    npm i -g vercel
-   ```
+   \`\`\`
 
 2. **Login to Vercel**
-   ```bash
+   \`\`\`bash
    vercel login
-   ```
+   \`\`\`
 
 3. **Deploy**
-   ```bash
+   \`\`\`bash
    vercel
-   ```
+   \`\`\`
 
 4. **Production Deployment**
-   ```bash
+   \`\`\`bash
    vercel --prod
-   ```
+   \`\`\`
 
 ### Environment Variables on Vercel
 
 Add these in the Vercel dashboard under Project Settings → Environment Variables:
 
 #### Optional - Google Maps
-```
+\`\`\`
 GOOGLE_MAPS_API_KEY=your_google_maps_api_key
-```
+\`\`\`
 
 #### Optional - Google Sheets
-```
+\`\`\`
 GOOGLE_SHEETS_API_KEY=your_google_sheets_api_key
 SPREADSHEET_ID=your_projects_spreadsheet_id
 GRIEVANCES_SPREADSHEET_ID=your_grievances_spreadsheet_id
-```
+\`\`\`
 
 ## Other Deployment Options
 
 ### Netlify
 
 1. **Install Netlify CLI**
-   ```bash
+   \`\`\`bash
    npm install -g netlify-cli
-   ```
+   \`\`\`
 
 2. **Build the app**
-   ```bash
+   \`\`\`bash
    npm run build
-   ```
+   \`\`\`
 
 3. **Deploy**
-   ```bash
+   \`\`\`bash
    netlify deploy --prod --dir=.next
-   ```
+   \`\`\`
 
 4. **Configure netlify.toml** (create if it doesn't exist)
-   ```toml
+   \`\`\`toml
    [build]
      command = "npm run build"
      publish = ".next"
 
    [[plugins]]
      package = "@netlify/plugin-nextjs"
-   ```
+   \`\`\`
 
 ### Self-Hosted (Node.js)
 
 1. **Build the application**
-   ```bash
+   \`\`\`bash
    npm run build
-   ```
+   \`\`\`
 
 2. **Start the server**
-   ```bash
+   \`\`\`bash
    npm start
-   ```
+   \`\`\`
 
 3. **Using PM2 for process management**
-   ```bash
+   \`\`\`bash
    npm install -g pm2
    pm2 start npm --name "citizen-watchdog" -- start
    pm2 save
    pm2 startup
-   ```
+   \`\`\`
 
 ### Docker Deployment
 
 1. **Create Dockerfile** (already included in project)
-   ```dockerfile
+   \`\`\`dockerfile
    FROM node:18-alpine AS base
    
    FROM base AS deps
@@ -135,23 +135,23 @@ GRIEVANCES_SPREADSHEET_ID=your_grievances_spreadsheet_id
    ENV PORT 3000
    
    CMD ["node", "server.js"]
-   ```
+   \`\`\`
 
 2. **Build Docker image**
-   ```bash
+   \`\`\`bash
    docker build -t citizen-watchdog .
-   ```
+   \`\`\`
 
 3. **Run container**
-   ```bash
+   \`\`\`bash
    docker run -p 3000:3000 -e GOOGLE_MAPS_API_KEY=your_key citizen-watchdog
-   ```
+   \`\`\`
 
 ### AWS Amplify
 
 1. Connect your GitHub repository to AWS Amplify
 2. Configure build settings:
-   ```yaml
+   \`\`\`yaml
    version: 1
    frontend:
      phases:
@@ -168,7 +168,7 @@ GRIEVANCES_SPREADSHEET_ID=your_grievances_spreadsheet_id
      cache:
        paths:
          - node_modules/**/*
-   ```
+   \`\`\`
 
 ## Performance Optimization
 
@@ -176,14 +176,14 @@ GRIEVANCES_SPREADSHEET_ID=your_grievances_spreadsheet_id
 The app uses Next.js Image component for automatic optimization. On Vercel, images are automatically optimized.
 
 For other platforms, configure:
-```javascript
+\`\`\`javascript
 // next.config.mjs
 const config = {
   images: {
     domains: ['your-domain.com'],
   },
 }
-```
+\`\`\`
 
 ### Caching Strategy
 - Static assets are automatically cached by Next.js
@@ -197,7 +197,7 @@ Already configured with `@vercel/analytics/next` in the layout.
 
 ### Custom Analytics
 Add your tracking code to `app/layout.tsx`:
-```tsx
+\`\`\`tsx
 import Script from 'next/script'
 
 // In the layout component
@@ -205,7 +205,7 @@ import Script from 'next/script'
   src="https://your-analytics.com/script.js"
   strategy="afterInteractive"
 />
-```
+\`\`\`
 
 ## Production Checklist
 
@@ -241,11 +241,11 @@ For high traffic:
 ## Troubleshooting
 
 ### Build Failures
-```bash
+\`\`\`bash
 # Clear cache
 rm -rf .next
 npm run build
-```
+\`\`\`
 
 ### Environment Variables Not Working
 - Ensure variables are prefixed correctly

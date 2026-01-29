@@ -50,27 +50,27 @@ A modern, transparent civic monitoring platform empowering Indian citizens to tr
 
 ### Prerequisites
 
-```bash
+\`\`\`bash
 Node.js 18+ installed
-```
+\`\`\`
 
 ### Installation
 
 1. Clone the repository:
-```bash
+\`\`\`bash
 git clone https://github.com/yourusername/v0-anti-corruption-dashboard.git
 cd v0-anti-corruption-dashboard
-```
+\`\`\`
 
 2. Install dependencies:
-```bash
+\`\`\`bash
 npm install
-```
+\`\`\`
 
 3. Run the development server:
-```bash
+\`\`\`bash
 npm run dev
-```
+\`\`\`
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
@@ -82,24 +82,24 @@ The app works perfectly without API keys using fallback modes. To enable full fu
 1. Get an API key from [Google Cloud Console](https://console.cloud.google.com/)
 2. Enable Maps JavaScript API and Places API
 3. Add to environment variables:
-```bash
+\`\`\`bash
 GOOGLE_MAPS_API_KEY=your_api_key_here
-```
+\`\`\`
 
 #### Google Sheets Backend (Optional)
 1. Follow the setup guide in [GOOGLE_SHEETS_SETUP.md](./GOOGLE_SHEETS_SETUP.md)
 2. Add to environment variables:
-```bash
+\`\`\`bash
 GOOGLE_SHEETS_API_KEY=your_api_key_here
 SPREADSHEET_ID=your_spreadsheet_id_here
 GRIEVANCES_SPREADSHEET_ID=your_grievances_sheet_id_here
-```
+\`\`\`
 
 See [GOOGLE_INTEGRATION_SETUP.md](./GOOGLE_INTEGRATION_SETUP.md) for detailed instructions.
 
 ## Project Structure
 
-```
+\`\`\`
 ├── app/
 │   ├── actions/
 │   │   └── fetch-projects.ts      # Server action for Google Sheets data
@@ -121,7 +121,7 @@ See [GOOGLE_INTEGRATION_SETUP.md](./GOOGLE_INTEGRATION_SETUP.md) for detailed in
 │   └── projects-data.ts           # Sample project data
 └── public/
     └── map-of-india-with-location-pins.jpg # Fallback map image
-```
+\`\`\`
 
 ## Sample Data
 
