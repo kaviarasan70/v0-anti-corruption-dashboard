@@ -2,6 +2,7 @@ import { Header } from "@/components/header"
 import { FinancialTransparency } from "@/components/financial-transparency"
 import { GrievanceMap } from "@/components/grievance-map"
 import { ReportIssueForm } from "@/components/report-issue-form"
+import { GoogleMapsEmbed } from "@/components/google-maps-embed"
 import { GoogleMapsLoader } from "@/components/google-maps-loader"
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
               <GrievanceMap />
               <ReportIssueForm />
             </div>
+            <GoogleMapsEmbed location="India" lat={20.5937} lng={78.9629} zoom={5} />
           </div>
         </main>
       </div>
