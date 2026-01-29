@@ -158,7 +158,7 @@ Your app is currently deployed at:
 
 This app was built with [v0.app](https://v0.app) and is automatically synced with the v0 deployment.
 
-web app can viewed by [v0.app](https://v0-anti-corruption-dashboard.vercel.app/) 
+Continue building on [v0.app](https://v0.app/chat/nIDeSgInWdL) and changes will be pushed to this repository automatically.
 
 ## Features Roadmap
 
