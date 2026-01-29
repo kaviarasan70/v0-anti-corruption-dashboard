@@ -1,32 +1,40 @@
-# Indian Citizen Watchdog Dashboard
+# Indian Citizen Watchdog - Anti-Corruption Dashboard
 
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/kavis-projects-5372883d/v0-anti-corruption-dashboard)
 [![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/nIDeSgInWdL)
 
-A modern transparency platform for Indian citizens to monitor public infrastructure projects and report civic issues. Built with Next.js 16, React 19, and integrated with Google Sheets for backend data management.
+A modern, transparent civic monitoring platform empowering Indian citizens to track government projects, report civic issues, and access real-time grievance data. Built with Next.js 16, React 19, Supabase for permanent storage, and integrated with Google Services for maximum transparency and accessibility.
 
-## Features
+## Key Features
 
-### 1. Financial Transparency
+### 1. 🏛️ Financial Transparency
 - **Real-time Project Tracking**: View infrastructure projects from major Indian cities
 - **Budget Monitoring**: Track central funds allocated, used, and remaining balances
 - **AI Verification Badges**: Projects verified for transparency and authenticity
 - **Smart Search**: Filter projects by name, city, state, or category
 - **Progress Visualization**: Interactive progress bars for fund utilization
 
-### 2. Live Grievance Map
+### 2. 🗺️ Live Grievance Map
 - **Interactive Map**: Visual representation of reported civic issues across India
 - **Google Maps Integration**: Optional real-time map with location pins (fallback to static map)
 - **Issue Categories**: Potholes, water scarcity, garbage, power outage, road damage
 - **Severity Indicators**: Color-coded markers (high, medium, low priority)
 - **Recent Reports**: Timeline of latest grievances with locations
 
-### 3. Report Issue Form
+### 3. 📝 Report Issue Form
 - **Photo Upload**: Citizens can attach visual evidence of issues
 - **Smart Location Input**: Google Places Autocomplete for accurate location (with manual fallback)
 - **Category Selection**: Organized issue types for efficient tracking
 - **Description Field**: Detailed problem reporting
-- **Google Sheets Integration**: Automatic submission to spreadsheet database
+- **Success Confirmation**: Beautiful success messages with report tracking
+- **Database Storage**: All reports permanently saved in Supabase
+
+### 4. 💾 Permanent Data Storage
+- **Supabase PostgreSQL Database**: Scalable, secure storage for all submissions
+- **Real-time Timestamps**: Automatic tracking of report submission and updates
+- **Row Level Security (RLS)**: Public transparency with controlled access
+- **Full Data Transparency**: All reports publicly viewable for community accountability
+- **Status Tracking**: Monitor report status (pending, in-progress, resolved)
 
 ## Tech Stack
 
@@ -158,7 +166,7 @@ Your app is currently deployed at:
 
 This app was built with [v0.app](https://v0.app) and is automatically synced with the v0 deployment.
 
-web app can viewed by [v0.app](https://v0-anti-corruption-dashboard.vercel.app/) 
+Continue building on [v0.app](https://v0.app/chat/nIDeSgInWdL) and changes will be pushed to this repository automatically.
 
 ## Features Roadmap
 
