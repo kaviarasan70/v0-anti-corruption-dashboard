@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Upload, AlertCircle, Send, MapPin } from "lucide-react"
+import { Upload, AlertCircle, Send, MapPin, CheckCircle, XCircle } from "lucide-react"
 
 export function ReportIssueForm() {
   const [file, setFile] = useState<File | null>(null)
@@ -62,9 +62,13 @@ export function ReportIssueForm() {
     }
   }, [])
 
+  const [submitSuccess, setSubmitSuccess] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setSubmitError(null)
 
     const formData = new FormData(e.currentTarget)
 
@@ -76,7 +80,8 @@ export function ReportIssueForm() {
 
       if (response.ok) {
         const data = await response.json()
-        alert(data.message || "Report submitted successfully!")
+        console.log("[v0] Report submitted successfully:", data)
+        setSubmitSuccess(true)
 
         if (formRef.current) {
           formRef.current.reset()
@@ -85,13 +90,16 @@ export function ReportIssueForm() {
         setLocation("")
         setCategory("")
         setDescription("")
+
+        // Hide success message after 5 seconds
+        setTimeout(() => setSubmitSuccess(false), 5000)
       } else {
         const errorData = await response.json()
         throw new Error(errorData.error || "Submission failed")
       }
     } catch (error) {
-      console.error("Error submitting report:", error)
-      alert(`Failed to submit report: ${error instanceof Error ? error.message : "Unknown error"}`)
+      console.error("[v0] Error submitting report:", error)
+      setSubmitError(error instanceof Error ? error.message : "Unknown error")
     } finally {
       setIsSubmitting(false)
     }
@@ -107,6 +115,26 @@ export function ReportIssueForm() {
         <CardDescription>Help improve your community by reporting problems</CardDescription>
       </CardHeader>
       <CardContent className="flex-1">
+        {submitSuccess && (
+          <div className="mb-4 flex gap-3 rounded-lg bg-green-50 p-4 text-green-900 border border-green-200">
+            <CheckCircle className="size-5 flex-shrink-0 text-green-600" />
+            <div>
+              <p className="font-semibold">Report Submitted Successfully!</p>
+              <p className="text-sm">Thank you for helping improve our communities. Your report has been saved and will be reviewed shortly.</p>
+            </div>
+          </div>
+        )}
+
+        {submitError && (
+          <div className="mb-4 flex gap-3 rounded-lg bg-red-50 p-4 text-red-900 border border-red-200">
+            <XCircle className="size-5 flex-shrink-0 text-red-600" />
+            <div>
+              <p className="font-semibold">Submission Failed</p>
+              <p className="text-sm">{submitError}</p>
+            </div>
+          </div>
+        )}
+
         <form ref={formRef} className="space-y-4" onSubmit={handleSubmit}>
           <div className="space-y-2">
             <Label htmlFor="category">Issue Category</Label>
